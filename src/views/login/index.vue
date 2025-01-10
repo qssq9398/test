@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import request from "@/utils/request";
 import { getPicCode } from '@/api/login'
+import { Toast } from 'vant';
 
 export default {
   name: "LoginPage",
@@ -57,6 +57,8 @@ export default {
       const { data: { base64, key } } = await getPicCode()
       this.picUrl = base64
       this.picKey = key
+      Toast('获取验证码成功')
+
     },
   },
 };
