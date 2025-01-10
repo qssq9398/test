@@ -21,13 +21,19 @@
             class="inp"
             maxlength="5"
             placeholder="请输入图形验证码"
-            type="text" 
+            type="text"
           />
-          <img v-if="picUrl" :src="picUrl" alt="" @click="getPicCode()"/>
+          <img v-if="picUrl" :src="picUrl" alt="" @click="getPicCode" />
         </div>
         <div class="form-item">
           <input class="inp" placeholder="请输入短信验证码" type="text" />
-          <button>获取验证码</button>
+          <button @click="sendCode">
+            {{
+              totalSecond === CurrentSecond
+                ? "获取验证码"
+                : CurrentSecond + "秒后重新发送"
+            }}
+          </button>
         </div>
       </div>
 
@@ -37,32 +43,59 @@
 </template>
 
 <script>
-import { getPicCode } from '@/api/login'
-import { Toast } from 'vant';
+import { getPicCode } from "@/api/login";
 
 export default {
   name: "LoginPage",
   data() {
-   return {
-      picCode: '',
-      picUrl: '',
-      picKey: ''
-   }
+    return {
+      picCode: "",
+      picUrl: "",
+      picKey: "",
+      totalSecond: 60,
+      CurrentSecond: 60,
+      timer: null, // 定时器 ID
+    };
   },
-  created () {
+  created() {
     this.getPicCode();
   },
+  beforeDestroy() {
+    // 清除定时器
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  },
   methods: {
-    async getPicCode () {
-      const { data: { base64, key } } = await getPicCode()
-      this.picUrl = base64
-      this.picKey = key
-      Toast('获取验证码成功')
+    async getPicCode() {
+      const {
+        data: { base64, key },
+      } = await getPicCode();
+      this.picUrl = base64;
+      this.picKey = key;
+    },
+    sendCode() {
+      if (this.CurrentSecond !== this.totalSecond) {
+        // 如果倒计时尚未结束，禁止重复点击
+        return;
+      }
 
+      // 开始倒计时
+      this.timer = setInterval(() => {
+        console.log("正在倒计时");
+        if (this.CurrentSecond > 0) {
+          this.CurrentSecond--;
+        } else {
+          clearInterval(this.timer); // 清除定时器
+          this.timer = null; // 重置定时器 ID
+          this.CurrentSecond = this.totalSecond; // 重置倒计时
+        }
+      }, 1000);
     },
   },
 };
 </script>
+
 
 <style lang="less" scoped>
 .container {
