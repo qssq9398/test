@@ -1,19 +1,3 @@
-# hm-shopping
+## 这是我的一个vue2练习项目
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+> 这是一个vue2智慧商城项目，本人学得不咋地，css和js基本不会
