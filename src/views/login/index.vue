@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { getPicCode, getMsgCode } from '@/api/login'
+import { codeLogin, getMsgCode, getPicCode } from '@/api/login'
 // import { Toast } from 'vant'
 
 export default {
@@ -80,6 +80,7 @@ export default {
     // 获取短信验证码
     async getCode () {
       if (!this.validFn()) {
+        // 如果没通过校验，没必要往下走了
         return
       }
 
@@ -129,7 +130,7 @@ export default {
     }
   },
   // 离开页面清除定时器
-  beforedestroyed () {
+  destroyed () {
     clearInterval(this.timer)
   }
 }

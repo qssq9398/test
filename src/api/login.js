@@ -6,6 +6,25 @@ export const getPicCode = () => {
   return request.get('/captcha/image')
 }
 
-export const getMsgCode = () => {
-   
+// 2. 获取短信验证码
+export const getMsgCode = (captchaCode, captchaKey, mobile) => {
+  return request.post('/captcha/sendSmsCaptcha', {
+    form: {
+      captchaCode,
+      captchaKey,
+      mobile
+    }
+  })
+}
+
+// 3. 登录接口
+export const codeLogin = (mobile, smsCode) => {
+  return request.post('/passport/login', {
+    form: {
+      isParty: false,
+      partyData: {},
+      mobile,
+      smsCode
+    }
+  })
 }
