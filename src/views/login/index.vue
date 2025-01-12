@@ -116,8 +116,6 @@ export default {
         return
       }
 
-      console.log('发送登录请求')
-
       const res = await codeLogin(this.mobile, this.msgCode)
       this.$store.commit('user/setUserInfo', res.data)
       this.$toast('登录成功')
